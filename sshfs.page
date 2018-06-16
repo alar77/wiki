@@ -1,0 +1,19 @@
+* apt install sshfs fuse fuseutils autofs
+
+Per farli funzionare assieme vanno creati:
+
+/etc/auto.master.d/sshfs.autofs
+
+~~~
+/home/giovanni/remote/nebbie.hexkeep.com /etc/auto.master.d/hexkeep.sshfs uid=1001,gid=1001,--timeout=120,--ghost
+/home/giovanni/remote/register /etc/auto.master.d/register.sshfs uid=1001,gid=1001,--timeout=120,--ghost
+~~~
+
+Esempio di file .sshfs:
+
+~~~
+vespito -fstype=fuse,rw,nodev,nonempty,noatime,allow_other,max_read=65536 :sshfs\#register\:rspvnt.vespito.com
+bkvespito -fstype=fuse,ro,nodev,nonempty,noatime,allow_other,max_read=65536 :sshfs\#register\:bkvespito
+~~~
+
+Perché funzioni, in root ci devono essere le chiavi private corrispondenti ai vari endpoint utilizzabili SENZA password
